@@ -3,15 +3,16 @@ package com.example.healthcaremanagementsystem.model;
 import com.example.healthcaremanagementsystem.enums.Category;
 import com.example.healthcaremanagementsystem.enums.Level;
 import com.example.healthcaremanagementsystem.enums.Specialty;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.hibernate.mapping.List;
-
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.util.Date;
 
 @Entity

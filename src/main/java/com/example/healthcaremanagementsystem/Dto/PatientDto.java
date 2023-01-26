@@ -2,16 +2,18 @@ package com.example.healthcaremanagementsystem.Dto;
 
 import com.example.healthcaremanagementsystem.enums.MaritalStatus;
 import com.example.healthcaremanagementsystem.model.HealthCareProvider;
-import jakarta.persistence.ManyToOne;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+
 import lombok.Data;
+
+import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Data
 
 public class PatientDto {
 
-    @NotBlank (message = "firstname must not be null")
+    @NotBlank(message = "firstname must not be null")
     private String firstName;
 
     private String middleName;

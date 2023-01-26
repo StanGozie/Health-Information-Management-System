@@ -3,9 +3,10 @@ package com.example.healthcaremanagementsystem.Dto;
 import com.example.healthcaremanagementsystem.enums.Category;
 import com.example.healthcaremanagementsystem.enums.Level;
 import com.example.healthcaremanagementsystem.enums.Specialty;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Data
 
@@ -17,7 +18,7 @@ public class HealthCareProviderDto {
     private String city;
     @NotBlank (message = "state must not be null")
     private String State;
-    @NotBlank (message = "email must not be null")
+    @NotBlank(message = "email must not be null")
     private String email;
     @NotNull(message = "level must not be null")
     private Level level;
