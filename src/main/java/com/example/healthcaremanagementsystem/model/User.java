@@ -5,10 +5,7 @@ import com.example.healthcaremanagementsystem.enums.Role;
 import lombok.*;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Getter
 @Setter
@@ -22,7 +19,9 @@ public class User {
     private Long id;
     private String name;
     private String email;
+    @Enumerated(EnumType.STRING)
     private Gender gender;
+    @Enumerated(EnumType.STRING)
     private Role role;
     private String password;
 }

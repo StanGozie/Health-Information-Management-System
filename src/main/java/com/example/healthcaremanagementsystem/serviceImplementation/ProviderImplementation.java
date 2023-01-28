@@ -1,30 +1,40 @@
 package com.example.healthcaremanagementsystem.serviceImplementation;
 
 import com.example.healthcaremanagementsystem.Dto.HealthCareProviderDto;
+import com.example.healthcaremanagementsystem.enums.Role;
 import com.example.healthcaremanagementsystem.exceptions.HealthProviderNotFoundException;
+import com.example.healthcaremanagementsystem.model.User;
 import com.example.healthcaremanagementsystem.repositories.HealthProviderRepository;
 import com.example.healthcaremanagementsystem.model.HealthCareProvider;
 
 
-import com.example.healthcaremanagementsystem.interfaces.ProviderInterface;
+import com.example.healthcaremanagementsystem.repositories.UserRepository;
+import com.example.healthcaremanagementsystem.services.ProviderInterface;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Optional;
 
 @AllArgsConstructor
-@NoArgsConstructor
 @Service
-
 public class ProviderImplementation implements ProviderInterface {
 
     private HealthProviderRepository healthProviderRepository;
-
+    private final UserRepository userRepository;
 
     @Override
-    public String registerNewProvider(HealthCareProviderDto healthCareProviderDto) {
+    public String registerNewProvider(String email, String password, HealthCareProviderDto healthCareProviderDto) {
+        User user = userRepository.findByEmailAndPassword(email, password);
+        if(user == null) {
+            return "You are not a registered user.";
+        }
+        if(user.getRole() != Role.ADMIN) {
+            return "You are not authorized to perform this action.";
+        }
         HealthCareProvider healthCareProvider = new HealthCareProvider();
         BeanUtils.copyProperties(healthCareProviderDto, healthCareProvider);
         healthProviderRepository.save(healthCareProvider);
@@ -32,7 +42,7 @@ public class ProviderImplementation implements ProviderInterface {
     }
 
     @Override
-    public String updateProviderInformation(Long id, HealthCareProviderDto healthCareProviderDto) {
+    public String updateProviderInformation(String email, String password, Long id, HealthCareProviderDto healthCareProviderDto) {
         Optional<HealthCareProvider> provider = healthProviderRepository.findById(id);
         if(provider.isPresent()) {
             HealthCareProvider healthCareProvider = new HealthCareProvider();
@@ -44,7 +54,7 @@ public class ProviderImplementation implements ProviderInterface {
     }
 
     @Override
-    public Optional<HealthCareProvider> viewProviderInformation(Long id) {
+    public Optional<HealthCareProvider> viewProviderInformation(String email, String password,Long id) {
         Optional<HealthCareProvider> provider = healthProviderRepository.findById(id);
         if(provider.isPresent()){
             return provider;

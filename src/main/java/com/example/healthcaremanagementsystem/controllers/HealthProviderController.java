@@ -16,18 +16,18 @@ public class HealthProviderController {
     private final ProviderImplementation providerImplementation;
 
     @PostMapping("register-provider")
-    public String registerNewProvider(@RequestBody HealthCareProviderDto healthCareProviderDto){
-        return providerImplementation.registerNewProvider(healthCareProviderDto);
+    public String registerNewProvider(@RequestParam("email") String email, @RequestParam("password") String password, @RequestBody HealthCareProviderDto healthCareProviderDto){
+        return providerImplementation.registerNewProvider(email, password, healthCareProviderDto);
     }
 
     @PutMapping("update-provider-info/{id}")
-    public String updateProviderInformation(@PathVariable Long id, @RequestBody HealthCareProviderDto healthCareProviderDto){
-        return providerImplementation.updateProviderInformation(id, healthCareProviderDto);
+    public String updateProviderInformation(@RequestParam("email") String email, @RequestParam("password") String password, @PathVariable Long id, @RequestBody HealthCareProviderDto healthCareProviderDto){
+        return providerImplementation.updateProviderInformation(email, password, id, healthCareProviderDto);
     }
 
     @GetMapping("view-provider/{id}")
-    public Optional<HealthCareProvider> viewProviderInformation(@PathVariable Long id){
-        return providerImplementation.viewProviderInformation(id);
+    public Optional<HealthCareProvider> viewProviderInformation(@RequestParam("email") String email, @RequestParam("password") String password,@PathVariable Long id){
+        return providerImplementation.viewProviderInformation(email, password, id);
     }
 
     @DeleteMapping("delete-provider/{name}")

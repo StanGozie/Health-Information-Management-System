@@ -9,7 +9,7 @@ import com.example.healthcaremanagementsystem.repositories.HealthProviderReposit
 import com.example.healthcaremanagementsystem.model.HealthCareProvider;
 import com.example.healthcaremanagementsystem.model.Patient;
 import com.example.healthcaremanagementsystem.repositories.PatientRepository;
-import com.example.healthcaremanagementsystem.interfaces.PatientInterface;
+import com.example.healthcaremanagementsystem.services.PatientInterface;
 import com.example.healthcaremanagementsystem.repositories.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;

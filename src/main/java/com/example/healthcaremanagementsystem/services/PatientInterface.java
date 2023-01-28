@@ -1,4 +1,4 @@
-package com.example.healthcaremanagementsystem.interfaces;
+package com.example.healthcaremanagementsystem.services;
 
 import com.example.healthcaremanagementsystem.Dto.PatientDto;
 import com.example.healthcaremanagementsystem.model.Patient;

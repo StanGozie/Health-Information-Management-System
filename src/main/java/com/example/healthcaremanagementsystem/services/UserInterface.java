@@ -1,9 +1,6 @@
-package com.example.healthcaremanagementsystem.interfaces;
+package com.example.healthcaremanagementsystem.services;
 
 import com.example.healthcaremanagementsystem.Dto.UserDto;
-import com.example.healthcaremanagementsystem.model.User;
-
-import java.util.Optional;
 
 public interface UserInterface {
     String login (String email, String password);

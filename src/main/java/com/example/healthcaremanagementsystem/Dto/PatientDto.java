@@ -5,6 +5,8 @@ import com.example.healthcaremanagementsystem.model.HealthCareProvider;
 
 import lombok.Data;
 
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -25,6 +27,7 @@ public class PatientDto {
     private String dob;
 
     @NotBlank (message = "marital status must not be null")
+    @Enumerated(EnumType.STRING)
     private MaritalStatus maritalStatus;
 
     @NotBlank (message = "occupation must not be null")
