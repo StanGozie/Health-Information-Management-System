@@ -10,16 +10,17 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Data
-public class UserDto {
+public class UserDto extends PersonDto{
 
-    @NotBlank(message = "name must not be blank")
-    private String name;
 
     @NotBlank(message = "email must not be blank")
     private String email;
 
     @NotBlank(message = "password must not be blank")
     private String password;
+
+    @NotBlank(message = "confirm password must not be blank")
+    private String confirmPassword;
 
     @NotNull(message = "role must not be null")
     @Enumerated(EnumType.STRING)

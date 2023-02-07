@@ -1,27 +1,26 @@
 package com.example.healthcaremanagementsystem.model;
 
-import com.example.healthcaremanagementsystem.enums.Gender;
 import com.example.healthcaremanagementsystem.enums.Role;
-import lombok.*;
-import org.springframework.stereotype.Service;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import java.util.Collection;
 
 @Getter
 @Setter
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+public class User extends Person{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String name;
     private String email;
-    @Enumerated(EnumType.STRING)
-    private Gender gender;
-    @Enumerated(EnumType.STRING)
-    private Role role;
     private String password;
+    private boolean enabled;
+    private Role role;
+    public User(String email, String password, Collection<? extends GrantedAuthority> grantedAuthorities) {
+    }
 }

@@ -4,35 +4,38 @@ import com.example.healthcaremanagementsystem.Dto.PatientDto;
 import com.example.healthcaremanagementsystem.model.Patient;
 import com.example.healthcaremanagementsystem.serviceImplementation.PatientServiceImplementation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
 @RequiredArgsConstructor
-@RequestMapping("api/v1/")
+@RequestMapping("/api/v1/")
 @RestController
 public class PatientController {
 
     private final PatientServiceImplementation patientServiceImplementation;
 
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("add-patient")
-    public String addPatient(@RequestBody String email, @RequestBody String password, @RequestBody Long id, @RequestBody PatientDto patientDto){
-        return patientServiceImplementation.addPatient(email, password, id, patientDto);
+    public ResponseEntity<String> addPatient(Long id, PatientDto patientDto){
+        return patientServiceImplementation.addPatient(id, patientDto);
     }
 
-    @PutMapping("update-patient/{email}/{id}")
-    public String updatePatientData(@RequestBody String email, @RequestBody String password, @PathVariable Long id, @RequestBody PatientDto patientDto){
-        return patientServiceImplementation.updatePatientInfo(email, password, id, patientDto);
+    @PutMapping("update-patient")
+    public ResponseEntity<String> updatePatientData(@RequestParam Long id, @RequestBody PatientDto patientDto){
+        return patientServiceImplementation.updatePatientInfo(id, patientDto);
     }
 
     @DeleteMapping("delete/id")
-    public String deletePatient(@PathVariable Long id){
-        return patientServiceImplementation.deletePatient(id);
+    public ResponseEntity<String> deletePatient(@RequestBody String name, @RequestBody Long id){
+        return patientServiceImplementation.deletePatient(name, id);
     }
-
+    @PreAuthorize("hasRole('DOCTOR')")
     @GetMapping("view-patient")
-    public Optional<Patient> viewPatient(@PathVariable Long id){
-        return patientServiceImplementation.viewPatient(id);
+    public Optional<Patient> viewPatient(@RequestBody String name, @RequestBody Long id) {
+        return patientServiceImplementation.viewPatient(name, id);
     }
 }

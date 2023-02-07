@@ -2,36 +2,38 @@ package com.example.healthcaremanagementsystem.controllers;
 
 import com.example.healthcaremanagementsystem.Dto.HealthCareProviderDto;
 import com.example.healthcaremanagementsystem.model.HealthCareProvider;
-import com.example.healthcaremanagementsystem.serviceImplementation.ProviderImplementation;
+import com.example.healthcaremanagementsystem.serviceImplementation.ProviderServiceImplementation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
-@RequestMapping("api/v1")
+@RequestMapping("/api/v1")
 @RequiredArgsConstructor
 @RestController
 public class HealthProviderController {
 
-    private final ProviderImplementation providerImplementation;
+    private final ProviderServiceImplementation providerImplementation;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("register-provider")
-    public String registerNewProvider(@RequestParam("email") String email, @RequestParam("password") String password, @RequestBody HealthCareProviderDto healthCareProviderDto){
-        return providerImplementation.registerNewProvider(email, password, healthCareProviderDto);
+    public HealthCareProvider registerNewProvider(@RequestBody HealthCareProviderDto healthCareProviderDto){
+        return providerImplementation.registerNewProvider(healthCareProviderDto);
     }
 
-    @PutMapping("update-provider-info/{id}")
-    public String updateProviderInformation(@RequestParam("email") String email, @RequestParam("password") String password, @PathVariable Long id, @RequestBody HealthCareProviderDto healthCareProviderDto){
-        return providerImplementation.updateProviderInformation(email, password, id, healthCareProviderDto);
+    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("update-provider-info")
+    public HealthCareProvider updateProviderInformation(@RequestParam Long id, @RequestBody HealthCareProviderDto healthCareProviderDto){
+        return providerImplementation.updateProviderInformation(id, healthCareProviderDto);
     }
-
-    @GetMapping("view-provider/{id}")
-    public Optional<HealthCareProvider> viewProviderInformation(@RequestParam("email") String email, @RequestParam("password") String password,@PathVariable Long id){
-        return providerImplementation.viewProviderInformation(email, password, id);
+    @GetMapping("view-provider")
+    public HealthCareProvider viewProviderInformation(@RequestBody Long id){
+        return providerImplementation.viewProviderInformation(id);
     }
-
-    @DeleteMapping("delete-provider/{name}")
-    public String  deleteProviderInformation(@PathVariable String name){
-        return providerImplementation.deleteProviderInformation(name);
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("delete-provider")
+    public String deleteProviderInformation(Long id){
+        return providerImplementation.deleteProviderInformation(id);
     }
 }

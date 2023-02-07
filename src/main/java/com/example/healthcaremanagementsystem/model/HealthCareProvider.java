@@ -9,11 +9,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+
+import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -35,6 +34,8 @@ public class HealthCareProvider {
     private Long phoneNumber;
     private Category category;
     private Specialty specialty;
+    @OneToMany(mappedBy = "healthCareProviderName")
+    private List<Patient> patientList;
     @CreationTimestamp
     private Date createdAt;
     @UpdateTimestamp

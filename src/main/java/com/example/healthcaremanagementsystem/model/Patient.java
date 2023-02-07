@@ -8,10 +8,7 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
@@ -19,24 +16,12 @@ import java.util.Date;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Patient {
+public class Patient extends Person{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String firstName;
-    private String middleName;
-    private String lastName;
-    private String dob;
+    private String uuid;
     private MaritalStatus maritalStatus;
     private String occupation;
-    private char bloodGroup;
-    private char genotype;
-    private String healthCareProvider;
-    @CreationTimestamp
-    private Date createdAt;
-    @UpdateTimestamp
-    private Date updatedAt;
-
+    private String bloodGroup;
+    private String genotype;
 
 }

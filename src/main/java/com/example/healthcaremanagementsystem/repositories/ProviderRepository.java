@@ -8,9 +8,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 @Transactional
 @Repository
-public interface HealthProviderRepository extends JpaRepository<HealthCareProvider, Long> {
+public interface ProviderRepository extends JpaRepository<HealthCareProvider, Long> {
 
     Optional<HealthCareProvider> findByEmail(String email);
     Optional<HealthCareProvider> findById(Long id);
-    Optional<HealthCareProvider> deleteHealthCareProviderByName(String name);
+    Optional<HealthCareProvider> findByName(String name);
+    Optional<HealthCareProvider> deleteHealthCareProviderById(Long id);
 }

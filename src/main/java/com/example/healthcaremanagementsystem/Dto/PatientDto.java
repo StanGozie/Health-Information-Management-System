@@ -13,18 +13,8 @@ import javax.validation.constraints.NotNull;
 
 @Data
 
-public class PatientDto {
+public class PatientDto extends PersonDto {
 
-    @NotBlank(message = "firstname must not be null")
-    private String firstName;
-
-    private String middleName;
-
-    @NotBlank (message = "firstname must not be null")
-    private String lastName;
-
-    @NotNull(message = "dob must not be null")
-    private String dob;
 
     @NotBlank (message = "marital status must not be null")
     @Enumerated(EnumType.STRING)
@@ -34,12 +24,11 @@ public class PatientDto {
     private String occupation;
 
     @NotNull (message = "blood group must not be null")
-    private char bloodGroup;
+    private String bloodGroup;
 
     @NotNull(message = "genotype must not be null")
-    private char genotype;
+    private String genotype;
 
-    @ManyToOne
     @NotBlank (message = "firstname must not be null")
-    private HealthCareProvider healthCareProvider;
+    private String healthCareProviderName;
 }

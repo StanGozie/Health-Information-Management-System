@@ -8,6 +8,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -15,23 +16,19 @@ import java.util.Date;
 @NoArgsConstructor
 @Setter
 @Getter
-public class PatientHealthInformation {
+public class PatientHealthInformation extends Patient {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @OneToOne
-    private Patient patient;
+
     private Boolean terminalIllness;
     private String lastHospitalVisited;
-    private Date lastDateOfHospitalVisit;
+    private LocalDateTime lastDateOfHospitalVisit;
     private Boolean laboratoryVisit;
     private String laboratoryReport;
     private String diagnosis;
     private Boolean drugReactions;
     private String drugReactionDescription;
     @CreationTimestamp
-    private Date createdAt;
+    private LocalDateTime createdAt;
     @UpdateTimestamp
-    private Date UpdatedAt;
+    private LocalDateTime UpdatedAt;
 }

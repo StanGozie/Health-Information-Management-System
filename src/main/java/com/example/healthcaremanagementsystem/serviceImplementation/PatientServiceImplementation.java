@@ -1,86 +1,92 @@
 package com.example.healthcaremanagementsystem.serviceImplementation;
 
 import com.example.healthcaremanagementsystem.Dto.PatientDto;
-import com.example.healthcaremanagementsystem.exceptions.EmailNotFoundException;
-import com.example.healthcaremanagementsystem.exceptions.PasswordNotFoundException;
-import com.example.healthcaremanagementsystem.exceptions.PatientNotFoundException;
-import com.example.healthcaremanagementsystem.model.User;
-import com.example.healthcaremanagementsystem.repositories.HealthProviderRepository;
+import com.example.healthcaremanagementsystem.repositories.ProviderRepository;
 import com.example.healthcaremanagementsystem.model.HealthCareProvider;
 import com.example.healthcaremanagementsystem.model.Patient;
 import com.example.healthcaremanagementsystem.repositories.PatientRepository;
-import com.example.healthcaremanagementsystem.services.PatientInterface;
-import com.example.healthcaremanagementsystem.repositories.UserRepository;
+import com.example.healthcaremanagementsystem.services.PatientService;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 @AllArgsConstructor
 @NoArgsConstructor
 @Service
-public class PatientServiceImplementation implements PatientInterface {
+public class PatientServiceImplementation implements PatientService {
 
     private PatientRepository patientRepository;
-    private HealthProviderRepository healthProviderRepository;
-    private UserRepository userRepository;
+    private ProviderRepository healthProviderRepository;
 
 
     @Override
-    public String addPatient(String email, String password, Long id, PatientDto patientDto) {
-        User user = userRepository.findByEmailAndPassword(email, password);
+    public ResponseEntity<String> addPatient(Long id, PatientDto patientDto) {
+
         Optional<HealthCareProvider> provider = healthProviderRepository.findById(id);
         if (provider.isPresent()) {
             Patient patient = new Patient();
             BeanUtils.copyProperties(patientDto, patient);
             patientRepository.save(patient);
 
-            return "Patient information has been saved successfully";
+            return ResponseEntity.ok("Patient information has been saved successfully");
         }
-        return "You are not allowed to perform this operation";
+        return ResponseEntity.status(400).body("Healthcare Provider Information is Wrong.");
     }
 
     @Override
-    public String updatePatientInfo(String email, String password, Long id, PatientDto patientDto) {
-        Optional<User> user = Optional.ofNullable(userRepository.findByEmailAndPassword(email, password));
-        if (email.isEmpty()) {
-            throw new EmailNotFoundException("Email not registered!");
-        }
-        if (password.isEmpty()) {
-            throw new PasswordNotFoundException("Password wrong or Incorrect");
-        }
+    public ResponseEntity<String> updatePatientInfo(Long id, PatientDto patientDto){
+
         Optional<HealthCareProvider> provider = healthProviderRepository.findById(id);
         if (provider.isEmpty()) {
-            throw new RuntimeException("You are not allowed to perform this operation");
+            return ResponseEntity.status(400).body("Healthcare Provider does not exist");
         }
         Optional<Patient> patient = patientRepository.findById(id);
         if (patient.isEmpty()) {
             Patient patient1 = new Patient();
-            BeanUtils.copyProperties(patientDto, patient1);
+            //BeanUtils.copyProperties(patientDto, patient1);
             BeanUtils.copyProperties(patientDto, patient);
-            return "Patient " + patient1.getFirstName() + " has been updated.";
+            return ResponseEntity.ok("Patient " + patient1.getFirstName() + " has been updated.");
         }
-        return "There is no patient with this Id.";
+        return ResponseEntity.status(404).body("There is no patient with this Id.");
     }
 
     @Override
-    public String deletePatient(Long id) {
-        patientRepository.findById(id)
-                .orElseThrow(() -> new PatientNotFoundException("There is no patient with this Id."));
+    public ResponseEntity<String> deletePatient(String name, Long id) {
 
-        Patient patient = new Patient();
-        patientRepository.delete(patient);
-        return null;
+        Optional<HealthCareProvider> provider = healthProviderRepository.findByName(name);
+        if (provider.isEmpty()) {
+            return ResponseEntity.status(404).body("Healthcare Provider does not exist");
+        }
+       Optional<Patient> patient = patientRepository.findById(id);
+        if(patient.isEmpty()) {
+            return ResponseEntity.status(404).body("There is no patient with this Id.");
+        }
+        patientRepository.delete(patient.get());
+
+        return ResponseEntity.ok("Patient details has been deleted");
     }
 
     @Override
-    public Optional<Patient> viewPatient(Long id) {
-        Optional<Patient> patient = patientRepository.findById(id);
-        if(patient.isPresent()) {
-            patientRepository.findById(id);
-            return patient;
+    public Optional<Patient> viewPatient(String name, Long id) {
+
+        Optional<HealthCareProvider> provider = healthProviderRepository.findByName(name);
+        if (provider.isPresent()) {
+
+            Optional<Patient> patient = patientRepository.findById(id);
+            if (patient.isPresent()) {
+                patientRepository.findById(id).get();
+                return patient;
+            }
         }
         return Optional.empty();
     }
 }
+
+
+// A doctor user or a hospital IT admin user can update patient data. The doctor can do it at the point of diagnosis. The admin user can
+// do it as the need arises.
+//A doctor user also has the right to view a patient's health information.
+// Only the admin user can delete a patient from the database.

@@ -1,11 +1,10 @@
 package com.example.healthcaremanagementsystem.controllers;
 
+import com.example.healthcaremanagementsystem.Dto.LoginRequestDto;
 import com.example.healthcaremanagementsystem.Dto.UserDto;
-import com.example.healthcaremanagementsystem.repositories.UserRepository;
-import com.example.healthcaremanagementsystem.serviceImplementation.UserImplementation;
-import com.example.healthcaremanagementsystem.services.UserInterface;
+import com.example.healthcaremanagementsystem.services.UserService;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @AllArgsConstructor
@@ -13,16 +12,16 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/")
 public class UserController {
 
-    private final UserInterface userInterface;
+    private final UserService userInterface;
 
-    @PostMapping("/register-user")
-    public String registerUser(@RequestBody UserDto userDto) {
+    @PostMapping("register-user")
+    ResponseEntity<String> registerUser(UserDto userDto) {
         return userInterface.registerUser(userDto);
     }
 
-    @PostMapping("/login")
-    public String loginUser(@RequestParam("email") String email, @RequestParam("password") String password) {
-        return userInterface.login(email, password);
+    @PostMapping("login")
+    public ResponseEntity<String> login(@RequestBody LoginRequestDto request) {
+        return userInterface.login(request);
     }
 }
 
