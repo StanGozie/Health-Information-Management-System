@@ -1,9 +1,11 @@
 package com.example.healthcaremanagementsystem.controllers;
 
-import com.example.healthcaremanagementsystem.Dto.HealthCareProviderDto;
+import com.example.healthcaremanagementsystem.Dto.request.HealthCareProviderDto;
 import com.example.healthcaremanagementsystem.model.HealthCareProvider;
-import com.example.healthcaremanagementsystem.serviceImplementation.ProviderServiceImplementation;
+import com.example.healthcaremanagementsystem.services.ProviderService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,26 +16,27 @@ import java.util.Optional;
 @RestController
 public class HealthProviderController {
 
-    private final ProviderServiceImplementation providerImplementation;
+    @Autowired
+    private ProviderService providerService;
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("register-provider")
-    public HealthCareProvider registerNewProvider(@RequestBody HealthCareProviderDto healthCareProviderDto){
-        return providerImplementation.registerNewProvider(healthCareProviderDto);
+    public ResponseEntity<HealthCareProvider> registerNewProvider(@RequestBody HealthCareProviderDto healthCareProviderDto){
+        return providerService.registerNewProvider(healthCareProviderDto);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("update-provider-info")
-    public HealthCareProvider updateProviderInformation(@RequestParam Long id, @RequestBody HealthCareProviderDto healthCareProviderDto){
-        return providerImplementation.updateProviderInformation(id, healthCareProviderDto);
+    public ResponseEntity<HealthCareProvider> updateProviderInformation(@RequestParam Long id, @RequestBody HealthCareProviderDto healthCareProviderDto){
+        return providerService.updateProviderInformation(id, healthCareProviderDto);
     }
     @GetMapping("view-provider")
-    public HealthCareProvider viewProviderInformation(@RequestBody Long id){
-        return providerImplementation.viewProviderInformation(id);
+    public Optional<HealthCareProvider> viewProviderInformation(@RequestParam Long id){
+        return providerService.viewProviderInformation(id);
     }
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("delete-provider")
-    public String deleteProviderInformation(Long id){
-        return providerImplementation.deleteProviderInformation(id);
+    public ResponseEntity<String> deleteProviderInformation(Long id){
+        return providerService.deleteProviderInformation(id);
     }
 }

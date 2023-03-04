@@ -1,4 +1,4 @@
-package com.example.healthcaremanagementsystem.Dto;
+package com.example.healthcaremanagementsystem.Dto.request;
 
 import com.example.healthcaremanagementsystem.enums.Category;
 import com.example.healthcaremanagementsystem.enums.Level;
@@ -31,11 +31,12 @@ public class HealthCareProviderDto {
     private Level level;
 
     private String website;
-    @NotBlank (message = "director must not be null")
 
+    @NotBlank (message = "director must not be null")
     private String director;
+
     @NotNull(message = "phone number must not be null")
-    private Long phoneNumber;
+    private String phoneNumber;
 
     @NotNull (message = "category must not be null")
     @Enumerated(EnumType.STRING)

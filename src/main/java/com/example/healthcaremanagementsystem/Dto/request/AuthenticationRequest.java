@@ -1,4 +1,4 @@
-package com.example.healthcaremanagementsystem.Dto;
+package com.example.healthcaremanagementsystem.Dto.request;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

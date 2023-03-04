@@ -1,27 +1,37 @@
 package com.example.healthcaremanagementsystem.model;
 
 import com.example.healthcaremanagementsystem.enums.MaritalStatus;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import lombok.*;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
+@Component
 @Getter
 @Setter
-public class Patient extends Person{
+@Table(name = "patient")
+public class Patient extends Person {
 
     private String uuid;
-    private MaritalStatus maritalStatus;
     private String occupation;
+    @Enumerated(EnumType.STRING)
+    private MaritalStatus maritalStatus;
+    private String healthcareProviderName;
     private String bloodGroup;
     private String genotype;
+    private Boolean terminalIllness;
+    private Boolean laboratoryVisit;
+    private String laboratoryReport;
+    private Boolean drugReactions;
+    private String lastHospitalVisited;
+    private String physicianName;
+    private String drugReactionDescription;
+    private LocalDateTime lastDateOfHospitalVisit;
+
 
 }

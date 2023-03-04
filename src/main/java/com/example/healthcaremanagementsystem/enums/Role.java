@@ -1,6 +1,8 @@
 package com.example.healthcaremanagementsystem.enums;
 
 public enum Role {
-    ADMIN,
-    DOCTOR
+    ROLE_ADMIN,
+    ROLE_DOCTOR,
+
+    ROLE_INVESTIGATOR
 }

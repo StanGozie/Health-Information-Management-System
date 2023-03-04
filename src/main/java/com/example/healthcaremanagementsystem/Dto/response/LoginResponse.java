@@ -1,4 +1,4 @@
-package com.example.healthcaremanagementsystem.pojos;
+package com.example.healthcaremanagementsystem.Dto.response;
 
 import lombok.*;
 

@@ -1,6 +1,6 @@
 package com.example.healthcaremanagementsystem.serviceImplementation;
 
-import com.example.healthcaremanagementsystem.Dto.EmailSenderDto;
+import com.example.healthcaremanagementsystem.Dto.request.EmailSenderDto;
 import com.example.healthcaremanagementsystem.services.EmailService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -45,7 +45,6 @@ public class EmailServiceImplementation implements EmailService {
             } catch (MessagingException e) {
 
                 LOGGER.error("An error occurred while sending an email to address : " + emailSenderDto.getTo() + "; error: " + e.getMessage());
-
             }
             LOGGER.info("Mail has been sent");
         }
