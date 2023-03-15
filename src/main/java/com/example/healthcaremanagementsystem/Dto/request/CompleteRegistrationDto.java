@@ -9,12 +9,13 @@ import lombok.Data;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDateTime;
 
 @Data
 public class CompleteRegistrationDto {
 
     @NotBlank(message = "dob must not be null")
-    private String dob;
+    private LocalDateTime dob;
     @Enumerated(EnumType.STRING)
     private Role role;
     @Enumerated(EnumType.STRING)

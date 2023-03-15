@@ -24,6 +24,4 @@ public class User extends Person {
     private String confirmationToken;
     private String healthCareProviderName;
 
-    public User(String email, String password, Collection<? extends GrantedAuthority> grantedAuthorities) {
-    }
 }

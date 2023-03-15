@@ -15,8 +15,9 @@ public class Diagnosis extends BaseClass {
     private String uuid;
     private String patientFirstName;
     private String patientLastName;
-    private String healthcareProviderName;
+    private String healthCareProviderName;
     private String physicianName;
+    private String hospitalVisited;
     private String diagnosis;
     private String prescription;
 }

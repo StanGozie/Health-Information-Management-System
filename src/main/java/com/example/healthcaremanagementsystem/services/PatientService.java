@@ -13,8 +13,10 @@ import java.util.Optional;
 public interface PatientService {
     ResponseEntity<ApiResponse> addPatient(PatientDto patientDto);
     ResponseEntity<ApiResponse> updatePatientInfo(Long id, PatientDto patientDto);
-    ResponseEntity<ApiResponse> deletePatient(Long id);
-    Optional<Patient> viewPatient(Long id);
+    ResponseEntity<ApiResponse> deletePatient(String uuid);
+    Optional<Patient> viewPatientByUuid (String uuid);
+    Optional<Patient> viewPatientByMiddleNameAndLastName (String middleName, String lastName);
+    Optional<Patient> viewPatientByPhoneNumber (String phoneNumber);
     Optional<Diagnosis> viewDiagnosis(Long id, String uuid);
     Optional<LabInvestigation> viewLabInvestigation (Long id, String uuid);
 }

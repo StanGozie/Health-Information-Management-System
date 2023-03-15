@@ -47,29 +47,3 @@ public class GlobalExceptionHandler {
         return new ApiResponse<>("Failed", "Error: " + ex.getMessage(), null);
     }
 }
-
-
-
-//        @ExceptionHandler(HealthProviderNotFoundException.class)
-//        @ResponseStatus(HttpStatus.BAD_REQUEST)
-//        @ResponseBody
-//        public ApiResponse<String> handleHealthProviderNotFoundException(HealthProviderNotFoundException ex){
-//            logger.error(ex.getMessage());
-//            return  new ApiResponse<>("Failed","Error: "+ex.getMessage(), null);
-//        }
-
-//        @ExceptionHandler(PatientNotFoundException.class)
-//        @ResponseStatus(HttpStatus.NOT_FOUND)
-//        @ResponseBody
-//        public ApiResponse<String> handlePatientNotFoundException(PatientNotFoundException ex){
-//            logger.error(ex.getMessage());
-//            return  new ApiResponse<>("Failed","Error: "+ex.getMessage(), null);
-//        }
-
-//    @ExceptionHandler(EmailNotFoundException.class)
-//    @ResponseStatus(HttpStatus.NOT_FOUND)
-//    @ResponseBody
-//    public ApiResponse<String> handleEmailNotFoundException(EmailNotFoundException ex){
-//        logger.error(ex.getMessage());
-//        return  new ApiResponse<>("Failed","Error: "+ex.getMessage(), null);
-//    }

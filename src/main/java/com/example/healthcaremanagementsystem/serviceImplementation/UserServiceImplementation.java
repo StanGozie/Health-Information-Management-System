@@ -9,11 +9,11 @@ import com.example.healthcaremanagementsystem.config.JwtUtils;
 import com.example.healthcaremanagementsystem.exceptions.ResourceNotFoundException;
 import com.example.healthcaremanagementsystem.exceptions.UserNotFoundException;
 import com.example.healthcaremanagementsystem.model.HealthCareProvider;
+import com.example.healthcaremanagementsystem.model.User;
 import com.example.healthcaremanagementsystem.repositories.HealthCareProviderRepository;
+import com.example.healthcaremanagementsystem.repositories.UserRepository;
 import com.example.healthcaremanagementsystem.services.EmailService;
 import com.example.healthcaremanagementsystem.services.UserService;
-import com.example.healthcaremanagementsystem.model.User;
-import com.example.healthcaremanagementsystem.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,9 +21,10 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.ValidationException;
+import java.util.InputMismatchException;
+import java.util.Objects;
 import java.util.Optional;
 
 
@@ -57,6 +58,9 @@ public class UserServiceImplementation implements UserService {
         if (isUserExist)
            throw new ValidationException("User Already Exists!");
 
+        if(!(Objects.equals(signUpRequest.getConfirmPassword(), signUpRequest.getPassword())))
+            throw new ValidationException("Passwords do not match");
+
         User newUser = new User();
         newUser.setFirstName(signUpRequest.getFirstName());
         newUser.setMiddleName(signUpRequest.getMiddleName());
@@ -76,16 +80,6 @@ public class UserServiceImplementation implements UserService {
         emailService.sendMail(emailSenderDto);
         return ResponseEntity.ok(new ApiResponse<>("Successful", "SignUp Successful. Check your mail to activate your account", null));
     }
-
-//  String URL = "http://localhost:8081/health-management-app/api/v1/user/confirm?token=" + token;
-//  String link = "<h3>Hello "  + signUpRequest.getFirstName()  +"<br> Click the link below to activate your account <a href=" +                URL + "><br>Activate</a><h3>";
-//  String subject = "Patient Health Information Verification Code";
-
-
-//        emailSenderDto.setTo(signUpRequest.getEmail());
-//        emailSenderDto.setSubject(subject);
-//        emailSenderDto.setContent(body);
-
 
     @Override
     public ResponseEntity<ApiResponse> confirmSignUp(ConfirmSignUpDto confirmSignUpDto) throws UserNotFoundException  {
@@ -139,7 +133,18 @@ public class UserServiceImplementation implements UserService {
         return ResponseEntity.ok(jwtUtils.generateToken(user));
     }
 
+    @Override
+    public ResponseEntity<ApiResponse> changePassword(ChangePasswordDto changePasswordDto) {
+        User user = appUtils.getLoggedInUser();
 
+        if(!(Objects.equals(changePasswordDto.getNewPassword(), changePasswordDto.getConfirmNewPassword()))) {
+            throw new InputMismatchException("Confirm new password does not match!");
+        }
+        user.setPassword(passwordEncoder.encode(changePasswordDto.getNewPassword()));
+        userRepository.save(user);
+
+        return ResponseEntity.ok(new ApiResponse<>("Success", "Your password has been changed!", null));
+    }
     @Override
     public String logout() {
         return null;

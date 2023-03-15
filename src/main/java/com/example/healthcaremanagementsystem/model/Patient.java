@@ -5,7 +5,6 @@ import lombok.*;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @AllArgsConstructor
@@ -21,17 +20,13 @@ public class Patient extends Person {
     private String occupation;
     @Enumerated(EnumType.STRING)
     private MaritalStatus maritalStatus;
-    private String healthcareProviderName;
+    private String healthCareProviderName;
     private String bloodGroup;
     private String genotype;
     private Boolean terminalIllness;
     private Boolean laboratoryVisit;
     private String laboratoryReport;
     private Boolean drugReactions;
-    private String lastHospitalVisited;
-    private String physicianName;
     private String drugReactionDescription;
-    private LocalDateTime lastDateOfHospitalVisit;
-
 
 }

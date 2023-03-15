@@ -18,4 +18,5 @@ public interface UserService {
 
     ResponseEntity<String> login(AuthenticationRequest authenticationRequest);
 
+    ResponseEntity<ApiResponse> changePassword(ChangePasswordDto changePasswordDto);
 }
