@@ -56,9 +56,9 @@ public class UserServiceImplementation implements UserService {
         Boolean isUserExist = userRepository.existsByEmail(signUpRequest.getEmail());
 
         if (isUserExist)
-           throw new ValidationException("User Already Exists!");
+            throw new ValidationException("User Already Exists!");
 
-        if(!(Objects.equals(signUpRequest.getConfirmPassword(), signUpRequest.getPassword())))
+        if (!(Objects.equals(signUpRequest.getConfirmPassword(), signUpRequest.getPassword())))
             throw new ValidationException("Passwords do not match");
 
         User newUser = new User();
@@ -72,7 +72,7 @@ public class UserServiceImplementation implements UserService {
         newUser.setConfirmationToken(token);
         userRepository.save(newUser);
 
-        String body = "<h3>Hello "  + signUpRequest.getFirstName()  +
+        String body = "<h3>Hello " + signUpRequest.getFirstName() +
                 "<br> Copy the link below to activate your account <br>Token :</h3>" + token;
         String subject = "Patient Health Information App";
 
@@ -82,15 +82,15 @@ public class UserServiceImplementation implements UserService {
     }
 
     @Override
-    public ResponseEntity<ApiResponse> confirmSignUp(ConfirmSignUpDto confirmSignUpDto) throws UserNotFoundException  {
+    public ResponseEntity<ApiResponse> confirmSignUp(ConfirmSignUpDto confirmSignUpDto) throws UserNotFoundException {
 
         Optional<User> existingUser = userRepository.findByConfirmationToken(confirmSignUpDto.getConfirmationToken());
         if (existingUser.isEmpty())
-        throw new UserNotFoundException("User not found");
-            existingUser.get().setIsActive(true);
-            userRepository.save(existingUser.get());
+            throw new UserNotFoundException("User not found");
+        existingUser.get().setIsActive(true);
+        userRepository.save(existingUser.get());
 
-            return ResponseEntity.ok(new ApiResponse<>("Successful", "Account verification successful", null));
+        return ResponseEntity.ok(new ApiResponse<>("Successful", "Account verification successful", null));
     }
 
     @Override
@@ -112,7 +112,7 @@ public class UserServiceImplementation implements UserService {
         User user = appUtils.getLoggedInUser();
 
         Optional<HealthCareProvider> healthCareProvider1 = providerRepository.findByName(chooseProviderDto.getHealthcareProviderName());
-        if(healthCareProvider1.isEmpty()) {
+        if (healthCareProvider1.isEmpty()) {
             throw new ResourceNotFoundException("HealthCare Provider Not Found");
         }
 
@@ -137,7 +137,7 @@ public class UserServiceImplementation implements UserService {
     public ResponseEntity<ApiResponse> changePassword(ChangePasswordDto changePasswordDto) {
         User user = appUtils.getLoggedInUser();
 
-        if(!(Objects.equals(changePasswordDto.getNewPassword(), changePasswordDto.getConfirmNewPassword()))) {
+        if (!(Objects.equals(changePasswordDto.getNewPassword(), changePasswordDto.getConfirmNewPassword()))) {
             throw new InputMismatchException("Confirm new password does not match!");
         }
         user.setPassword(passwordEncoder.encode(changePasswordDto.getNewPassword()));
@@ -145,10 +145,49 @@ public class UserServiceImplementation implements UserService {
 
         return ResponseEntity.ok(new ApiResponse<>("Success", "Your password has been changed!", null));
     }
+
     @Override
     public String logout() {
         return null;
     }
 
+    @Override
+    public ApiResponse<String> forgotPassword(String email) {
+
+        Boolean isEmailExist = userRepository.existsByEmail(email);
+        if (!isEmailExist)
+            throw new UserNotFoundException("User Does Not Exist!");
+
+        User user = new User();
+        String token = jwtUtils.generateToken(userDetailsService.loadUserByUsername(user.getEmail()));
+        user.setConfirmationToken(token);
+        userRepository.save(user);
+
+        String resetPasswordLink = "http://localhost:8081/api/v1/resetPassword" + token;
+        String resetLink = "<h3>Hello " + user.getFirstName() + ",<br> Click the link below to reset your password <a href=" + resetPasswordLink + "><br>Reset Password</a></h3>";
+
+        EmailSenderDto emailSenderDto = new EmailSenderDto();
+        emailService.sendMail(emailSenderDto);
+
+        return new ApiResponse<>(null, "A password reset link has been sent to your email", null);
+    }
+
+    @Override
+    public ApiResponse<String> resetPassword(ResetPasswordDto resetPasswordDTO) {
+        Optional<User> user = userRepository.findByConfirmationToken(resetPasswordDTO.getToken());
+
+        if(user.isEmpty())
+            throw new ValidationException("Token incorrect!");
+
+        if(! resetPasswordDTO.getConfirmPassword().equals(resetPasswordDTO.getNewPassword())) {
+            throw new InputMismatchException("Passwords do not match!");
+        }
+
+        User user1 = new User();
+        user1.setPassword(passwordEncoder.encode(resetPasswordDTO.getNewPassword()));
+        userRepository.save(user1);
+
+        return new ApiResponse<String>("Success", "password reset successful", null);
+    }
 
 }

@@ -4,7 +4,6 @@ import com.example.healthcaremanagementsystem.Dto.request.*;
 import com.example.healthcaremanagementsystem.Dto.response.ApiResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @Service
 public interface UserService {
@@ -19,4 +18,8 @@ public interface UserService {
     ResponseEntity<String> login(AuthenticationRequest authenticationRequest);
 
     ResponseEntity<ApiResponse> changePassword(ChangePasswordDto changePasswordDto);
+
+    ApiResponse<String> forgotPassword(String email);
+
+    ApiResponse<String> resetPassword(ResetPasswordDto resetPasswordDTO);
 }

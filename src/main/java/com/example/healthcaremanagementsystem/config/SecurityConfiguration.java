@@ -28,7 +28,7 @@ public class SecurityConfiguration {
     private final String [] AUTH_WHITELIST = {
              path + "view-provider", "/swagger-ui/**", path + "delete/id", path + "view-patient", "/configuration/**",
             "swagger**/**", "/webjars/**", "/v3/api-docs/**", path + "/**",  path + "register-user", path + "sign-up",
-             path + "confirm-signup", path + "authenticate"
+             path + "confirm-signup", path + "authenticate", path + "forgot-password", path + "reset-password"
     };
 
     private final JwtAuthFilter jwtAuthFilter;
